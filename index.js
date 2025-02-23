@@ -27,15 +27,43 @@ const url=require("url");
 // })
 // myServer.listen(8000,()=>console.log("server start"));
 
+// const myServer=http.createServer((req,res)=>{
+//     const log= `${Date.now()} ${req.url}: New request received\n`;
+//     const Myurl=url.parse(req.url,true);
+//     console.log(Myurl);
+//     fs.appendFile("./log.txt",log,(err,data)=>{
+//         console.log("helllo from server");
+//         switch(Myurl.pathname){
+//             case '/':
+//                 res.end("home page");
+//                 break;
+//                 case '/about':
+//                     const username=Myurl.query.myname;
+//                     res.end(`hi ${username}`);
+//                     break;
+//                     case '/contact':
+//                         res.end("phone number");
+//                         break;
+//                         default:
+//                             res.end("404");
+//         }
+//     })
+
+// })
+// myServer.listen(8000,()=>console.log("server started"));
+
+
+// http methods
+
 const myServer=http.createServer((req,res)=>{
-    const log= `${Date.now()} ${req.url}: New request received\n`;
+    const log= `${Date.now()}: ${req.methods} ${req.url}: New request received\n`;
     const Myurl=url.parse(req.url,true);
     console.log(Myurl);
     fs.appendFile("./log.txt",log,(err,data)=>{
         console.log("helllo from server");
         switch(Myurl.pathname){
             case '/':
-                res.end("home page");
+                if(req.method === "GET")res.end("home page");
                 break;
                 case '/about':
                     const username=Myurl.query.myname;
@@ -44,6 +72,12 @@ const myServer=http.createServer((req,res)=>{
                     case '/contact':
                         res.end("phone number");
                         break;
+                        case '/signup':
+                            if(req.method === "GET")res.end("this is a sign up form")
+                                else if(req.method === "POST"){
+                            //DB query
+                            res.end("success")
+                            }
                         default:
                             res.end("404");
         }
@@ -51,5 +85,3 @@ const myServer=http.createServer((req,res)=>{
 
 })
 myServer.listen(8000,()=>console.log("server started"));
-
-
